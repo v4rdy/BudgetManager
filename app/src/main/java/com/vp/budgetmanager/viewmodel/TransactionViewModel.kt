@@ -1,7 +1,7 @@
 package com.vp.budgetmanager.viewmodel
 import androidx.lifecycle.*
 import com.vp.budgetmanager.model.Transaction
-import com.vp.budgetmanager.TransactionRepository
+import com.vp.budgetmanager.database.TransactionRepository
 import kotlinx.coroutines.launch
 
 

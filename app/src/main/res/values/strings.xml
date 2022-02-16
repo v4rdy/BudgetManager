@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Expense</string>
+    <string name="app_name">Budget Manager</string>
     <string-array name="spinner_options">
         <item>Food</item>
         <item>Shopping</item>
@@ -9,6 +9,7 @@
         <item>Other</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_transaction">Add transaction</string>
+    <string name="add_transaction">Dodaj koszt</string>
+    <string name="add">Dodaj</string>
+    <string name="delete_transaction">delete_transaction</string>
 </resources>

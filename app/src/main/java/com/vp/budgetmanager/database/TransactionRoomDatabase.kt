@@ -10,7 +10,7 @@ import com.vp.budgetmanager.model.Transaction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Transaction::class], version = 1, exportSchema = false)
+@Database(entities = [Transaction::class], version = 2, exportSchema = true)
 abstract class TransactionRoomDatabase : RoomDatabase() {
 
     abstract fun transactionDAO() : TransactionDAO

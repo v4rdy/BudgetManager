@@ -1,4 +1,4 @@
-package com.vp.budgetmanager
+package com.vp.budgetmanager.database
 import androidx.annotation.WorkerThread
 import com.vp.budgetmanager.database.TransactionDAO
 import com.vp.budgetmanager.model.Transaction
