@@ -7,7 +7,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,12 +37,12 @@ class MainActivity : AppCompatActivity() {
 
         var transactions: List<Transaction>
 
-        transactionViewModel.allTransactions.observe(this, Observer { t ->
+        transactionViewModel.allTransactions.observe(this) { t ->
             t?.let {
                 transactions = it
                 adapter.submitList(transactions.asReversed())
             }
-        })
+        }
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener{
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             combineValues(total,today)
             Toast.makeText(this,"TO",Toast.LENGTH_SHORT).show()
         }
-        liveDataMerger.observe(this, Observer {})
+        liveDataMerger.observe(this) {}
 
     }
 
