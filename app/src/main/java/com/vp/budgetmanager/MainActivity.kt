@@ -18,66 +18,13 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val transactionViewModel : TransactionViewModel by viewModels {
-        TransactionViewModelFactory((application as TransactionApplication).repository)
-    }
-
-    private val newTransactionActivityRequestCode = 1
-
     lateinit var overview: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = RecyclerViewAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        var transactions: List<Transaction>
-
-        transactionViewModel.allTransactions.observe(this) { t ->
-            t?.let {
-                transactions = it
-                adapter.submitList(transactions.asReversed())
-            }
-        }
-
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener{
-            val intent = Intent(this,NewTransactionActivity::class.java)
-            startActivityForResult(intent,newTransactionActivityRequestCode)
-        }
-
-        overview = findViewById(R.id.overview)
-        val cal = Calendar.getInstance().timeInMillis
-
-        var total = transactionViewModel.totalSpent.value
-        var today = transactionViewModel.getTodaySpent(cal).value
-
-        val liveDataMerger = MediatorLiveData<Int>()
-        liveDataMerger.addSource(transactionViewModel.totalSpent){ value ->
-            total = value
-            combineValues(total,today)
-            Toast.makeText(this,"TT",Toast.LENGTH_SHORT).show()
-        }
-        liveDataMerger.addSource(transactionViewModel.getTodaySpent(cal)){ value ->
-            today = value
-            combineValues(total,today)
-            Toast.makeText(this,"TO",Toast.LENGTH_SHORT).show()
-        }
-        liveDataMerger.observe(this) {}
-
     }
-
-    private fun combineValues(total: Int?, today: Int?){
-        if(total!=null  &&  today!=null) {
-            val s = "Total Spent: $total\nToday's Spent: $today";
-            overview.text = s
-        }
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -1,17 +1,21 @@
 package com.vp.budgetmanager
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
+import com.vp.budgetmanager.databinding.ActivityNewTransactionBinding
+import com.vp.budgetmanager.databinding.FragmentNewTransactionBinding
 
-class NewTransactionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class NewTransactionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var amount: TextInputEditText
     private lateinit var spinner: Spinner
@@ -19,13 +23,19 @@ class NewTransactionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
     var type: String = ""
     var money: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_transaction)
+    private lateinit var binding: FragmentNewTransactionBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentNewTransactionBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-        initialize()
-
-        add.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.add.setOnClickListener {
             val replyIntent = Intent()
             if(TextUtils.isEmpty(amount.text)  ||  amount.text.toString().toInt()>Int.MAX_VALUE){
                 setResult(RESULT_CANCELED,replyIntent)
@@ -36,6 +46,15 @@ class NewTransactionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             }
             finish()
         }
+    }
+
+    override fun onCreateView(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        b
+
+        initialize()
+
+
 
     }
 
