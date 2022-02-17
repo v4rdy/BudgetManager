@@ -20,4 +20,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+<style name="TextInputLayout.Green"
+    parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="hintTextColor">@color/primary_green</item>
+    <item name="boxStrokeColor">@color/primary_dark_green</item>
+</style>
 </resources>

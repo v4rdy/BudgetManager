@@ -13,14 +13,22 @@
         <action
             android:id="@+id/to_new_transaction"
             app:destination="@+id/new_transaction"/>
+        <action
+            android:id="@+id/to_first_enter"
+            app:destination="@+id/first_enter"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/first_enter"
+        android:label="First enter"
+        tools:layout="@layout/fragment_first_enter"
+        android:name="com.vp.budgetmanager.views.FirstEnterFragment">
     </fragment>
 
     <fragment
         android:id="@+id/new_transaction"
         android:label="New transactions"
         tools:layout="@layout/fragment_new_transaction"
-        android:name="com.vp.budgetmanager.views.NewTransactionFragment">
-
-    </fragment>
+        android:name="com.vp.budgetmanager.views.NewTransactionFragment"/>
 
 </navigation>

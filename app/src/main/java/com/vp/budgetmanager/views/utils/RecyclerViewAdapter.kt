@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vp.budgetmanager.R
+import com.vp.budgetmanager.TransactionApplication
 import com.vp.budgetmanager.model.Transaction
+import com.vp.budgetmanager.viewmodel.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,11 +35,13 @@ class RecyclerViewAdapter : ListAdapter<Transaction, RecyclerViewAdapter.Transac
     class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val amount: TextView = itemView.findViewById(R.id.amount_type)
         private val time: TextView = itemView.findViewById(R.id.time)
+        private val name: TextView = itemView.findViewById(R.id.transaction_name)
         private val delete: ImageView = itemView.findViewById(R.id.delete)
         private val linearLayout: LinearLayout = itemView.findViewById(R.id.linearLayout)
 
         fun bind(transaction: Transaction?) {
             val amountAndType = transaction!!.amount.toString() + " zł, " + transaction.type
+            name.text = transaction.name.toString()
             amount.text = amountAndType
             val format = SimpleDateFormat("dd/MM/yyyy hh:mm")
             val cal = Calendar.getInstance()
@@ -51,10 +55,10 @@ class RecyclerViewAdapter : ListAdapter<Transaction, RecyclerViewAdapter.Transac
                 val dialog = AlertDialog.Builder(itemView.context)
                     .setTitle("Delete Transaction?")
                     .setMessage("Are you sure you want to delete the transaction?")
-//                    .setPositiveButton("Yes"){ dialog,which ->
-//                        val transactionViewModel = TransactionViewModel(TransactionApplication().repository)
-//                        transactionViewModel.delete(transaction = transaction)
-//                    }
+                    .setPositiveButton("Yes"){ dialog,which ->
+                        val transactionViewModel = TransactionViewModel(TransactionApplication().repository)
+                        transactionViewModel.delete(transaction = transaction)
+                    }
                     .setNegativeButton("No"){dialog,which ->
                         dialog.cancel()
                     }

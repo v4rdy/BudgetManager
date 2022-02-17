@@ -2,7 +2,7 @@ package com.vp.budgetmanager.database
 
 import androidx.room.*
 import com.vp.budgetmanager.model.Transaction
-import com.vp.budgetmanager.table_name
+import com.vp.budgetmanager.utils.table_name
 
 import kotlinx.coroutines.flow.Flow
 
@@ -16,10 +16,10 @@ interface TransactionDAO {
     suspend fun deleteAll()
 
     @Query("Select SUM(amount) from $table_name")
-    fun getTotalSpent(): Flow<Int>
+    fun getTotalSpent(): Flow<Float>
 
     @Query("Select SUM(amount) from $table_name where time >= :time")
-    fun getTodaySpent(time: Long): Flow<Int>
+    fun getTodaySpent(time: Long): Flow<Float>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(transaction: Transaction)

@@ -43,7 +43,15 @@
     <Spinner
         android:layout_marginTop="10dp"
         android:padding="8dp"
-        android:id="@+id/dropdown_menu"
+        android:id="@+id/category_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"/>
+
+    <Spinner
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:id="@+id/period_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:spinnerMode="dialog"/>
@@ -54,7 +62,7 @@
         android:padding="10dp"
         android:layout_gravity="center"
         app:backgroundTint="@null"
-        android:background="@drawable/rounded_background_orange"
+        android:background="@drawable/background_ripple"
         android:text="@string/add"
         android:layout_width="125dp"
         android:layout_height="wrap_content" />

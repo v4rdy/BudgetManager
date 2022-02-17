@@ -6,8 +6,9 @@
     <color name="primary_green">#FF37966F</color>
     <color name="primary_light_green">#FFB9E4C9</color>
     <color name="secondary_orange">#FFFD5523</color>
+    <color name="light_red">#FA5757</color>
     <color name="secondary_light">#FFFFFBE6</color>
-
+    <color name="secondary_creme">#DCD5B0</color>
     <color name="transparent">#FF000000</color>
     <color name="Food">#81d4fa</color>
     <color name="Shopping">#80cbc4</color>

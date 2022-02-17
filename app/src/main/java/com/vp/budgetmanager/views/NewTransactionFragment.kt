@@ -15,7 +15,7 @@ import com.vp.budgetmanager.databinding.FragmentNewTransactionBinding
 import com.vp.budgetmanager.model.Transaction
 import com.vp.budgetmanager.viewmodel.TransactionViewModel
 
-class NewTransactionFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class NewTransactionFragment : Fragment(){
 
     private lateinit var viewModel: TransactionViewModel
     var type: String = ""
@@ -44,7 +44,7 @@ class NewTransactionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             } else {
                 val date = System.currentTimeMillis()
                 val transaction =
-                    Transaction(amount = binding.amountInput.text.toString().toFloat(), type = type, name = "name", time = date)
+                    Transaction(amount = binding.amountInput.text.toString().toFloat(), type = type, name = binding.nameInput.text.toString(), time = date)
                 viewModel.insert(transaction)
                 Snackbar.make(it, "Transaction added successfully", Snackbar.LENGTH_LONG).show()
                 findNavController().popBackStack()
@@ -62,17 +62,19 @@ class NewTransactionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             )
             .also { adapter ->
                 adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
-                binding.dropdownMenu.adapter = adapter
+                binding.categoryMenu.adapter = adapter
             }
-        binding.dropdownMenu.onItemSelectedListener = this
+        binding.categoryMenu.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                type = parent?.getItemAtPosition(position) as String
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        type = parent?.getItemAtPosition(position) as String
-    }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
 
 }

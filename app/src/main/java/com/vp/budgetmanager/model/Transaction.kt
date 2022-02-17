@@ -3,7 +3,7 @@ package com.vp.budgetmanager.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.vp.budgetmanager.table_name
+import com.vp.budgetmanager.utils.table_name
 
 @Entity(tableName = table_name)
 data class Transaction(

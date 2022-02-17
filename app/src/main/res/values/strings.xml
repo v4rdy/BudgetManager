@@ -12,4 +12,10 @@
     <string name="add_transaction">Dodaj koszt</string>
     <string name="add">Dodaj</string>
     <string name="delete_transaction">delete_transaction</string>
+    <string name="hello">Cześć!</string>
+    <string name="enter_profile_data">Wprowadż poniższe dane, dla dalszej analizy twojego budżetu:</string>
+    <string name="name">Imię</string>
+    <string name="income_sum">Dochód misięczny</string>
+    <string name="saving_sum">Kwota oczszędności</string>
+    <string name="enter">Wejdź</string>
 </resources>
