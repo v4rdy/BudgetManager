@@ -10,7 +10,7 @@ import com.vp.budgetmanager.utils.database_name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Transaction::class], version = 2, exportSchema = true)
+@Database(entities = [Transaction::class], version = 1, exportSchema = true)
 abstract class TransactionRoomDatabase : RoomDatabase() {
 
     abstract fun transactionDAO() : TransactionDAO
@@ -29,7 +29,6 @@ abstract class TransactionRoomDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(transactionDAO: TransactionDAO) {
-            // Delete all content here.
             transactionDAO.deleteAll()
         }
     }

@@ -1,4 +1,5 @@
 package com.vp.budgetmanager.views.utils
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Build
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ class RecyclerViewAdapter : ListAdapter<Transaction, RecyclerViewAdapter.Transac
         holder.bind(current)
     }
 
+    @SuppressLint("SimpleDateFormat")
     class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val amount: TextView = itemView.findViewById(R.id.amount_type)
         private val time: TextView = itemView.findViewById(R.id.time)
@@ -45,7 +47,7 @@ class RecyclerViewAdapter : ListAdapter<Transaction, RecyclerViewAdapter.Transac
             amount.text = amountAndType
             val format = SimpleDateFormat("dd/MM/yyyy hh:mm")
             val cal = Calendar.getInstance()
-            cal.timeInMillis = transaction.time!!
+            cal.timeInMillis = transaction.time
             this.time.text = format.format(cal.time)
 
             val color = itemView.resources.getColor(R.color.primary_light_green)
@@ -53,13 +55,14 @@ class RecyclerViewAdapter : ListAdapter<Transaction, RecyclerViewAdapter.Transac
 
             delete.setOnClickListener {
                 val dialog = AlertDialog.Builder(itemView.context)
-                    .setTitle("Delete Transaction?")
-                    .setMessage("Are you sure you want to delete the transaction?")
-                    .setPositiveButton("Yes"){ dialog,which ->
+                    .setTitle("Usunąć koszt?")
+                    .setMessage("Czy chcesz usunąć wybrany koszt?")
+                    .setPositiveButton("Tak"){ _, _ ->
                         val transactionViewModel = TransactionViewModel(TransactionApplication().repository)
                         transactionViewModel.delete(transaction = transaction)
                     }
-                    .setNegativeButton("No"){dialog,which ->
+
+                    .setNegativeButton("Nie"){ dialog, _ ->
                         dialog.cancel()
                     }
                     .create()

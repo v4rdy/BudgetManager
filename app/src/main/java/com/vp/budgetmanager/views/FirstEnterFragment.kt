@@ -51,15 +51,15 @@ class FirstEnterFragment : Fragment() {
     private fun isErrors(): Boolean {
         var isErrors = false
         if (binding.nameInput.text.toString().isEmpty()) {
-            binding.nameInput.error = "Pole jest puste"
+            binding.nameInput.error = getString(R.string.empty_field)
             isErrors = true
         }
         if (binding.incomeInput.text.toString().isEmpty()) {
-            binding.incomeInput.error = "Pole jest puste"
+            binding.incomeInput.error = getString(R.string.empty_field)
             isErrors = true
         }
         if (binding.savingInput.text.toString().isEmpty()) {
-            binding.savingInput.error = "Pole jest puste"
+            binding.savingInput.error = getString(R.string.empty_field)
             isErrors = true
         }
         return isErrors

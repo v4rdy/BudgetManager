@@ -11,8 +11,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- Customize your theme here. -->
     </style>
+
 
     <style name="Theme.BudgetManager.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
@@ -20,9 +20,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
-<style name="TextInputLayout.Green"
-    parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-    <item name="hintTextColor">@color/primary_green</item>
-    <item name="boxStrokeColor">@color/primary_dark_green</item>
-</style>
+
+    <style name="TextInputLayout.Green" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">@color/primary_green</item>
+        <item name="boxStrokeColor">@color/primary_dark_green</item>
+    </style>
 </resources>

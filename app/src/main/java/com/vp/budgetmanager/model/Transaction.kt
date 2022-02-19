@@ -10,7 +10,8 @@ data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "amount") val amount: Float?,
-    @ColumnInfo(name = "type") val type: String?,
-    @ColumnInfo(name = "time") val time: Long?
+    @ColumnInfo(name = "amount") val amount: Float,
+    @ColumnInfo(name = "type") val type: String,
+    @ColumnInfo(name = "period") val period: String,
+    @ColumnInfo(name = "time") val time: Long
 )

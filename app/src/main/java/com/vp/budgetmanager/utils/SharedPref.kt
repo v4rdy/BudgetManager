@@ -41,12 +41,4 @@ class SharedPref private constructor() {
             .putFloat(key, data)
             .apply()
     }
-
-    fun removeString(key: String) {
-        sharedPreferences.edit().remove(key).apply()
-    }
-
-    fun clearAll() {
-        sharedPreferences.edit().clear().apply()
-    }
 }

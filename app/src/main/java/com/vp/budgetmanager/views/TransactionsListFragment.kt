@@ -19,12 +19,16 @@ import com.vp.budgetmanager.utils.INCOME_AMOUNT
 import com.vp.budgetmanager.utils.SAVING_AMOUNT
 import com.vp.budgetmanager.utils.SharedPref
 import com.vp.budgetmanager.viewmodel.TransactionViewModel
-import java.math.RoundingMode
 
 class TransactionsListFragment : Fragment() {
 
     private lateinit var binding: FragmentTransactionsListBinding
     private lateinit var viewModel: TransactionViewModel
+    private  var savingAmount = 0.0F
+    private var incomeAmount = 0.0F
+    private var adapter = RecyclerViewAdapter()
+    private lateinit var transactions: List<Transaction>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,60 +40,90 @@ class TransactionsListFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = RecyclerViewAdapter()
+        initialize()
+        checkIsFirstEnter()
+        setListeners()
+        setObservers()
+    }
+
+    private fun setListeners(){
+        binding.statCard.setOnClickListener {
+            findNavController().navigate(R.id.statistic_fragment)
+        }
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.to_new_transaction)
+        }
+    }
+
+    private fun initialize(){
         viewModel = ViewModelProvider(
             requireActivity(),
             (requireActivity().application as TransactionApplication).viewModelFactory
         )[TransactionViewModel::class.java]
-        isFirstEnter()
-        binding.recyclerview.adapter = adapter
-        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
-        var transactions: List<Transaction>
 
+        savingAmount = SharedPref.getInstance(requireContext()).getFloat(SAVING_AMOUNT)
+        incomeAmount = SharedPref.getInstance(requireContext()).getFloat(INCOME_AMOUNT)
+        setStats()
+    }
+
+    private fun setObservers(){
         viewModel.allTransactions.observe(viewLifecycleOwner) { t ->
             t?.let {
                 transactions = it
                 adapter.submitList(transactions.asReversed())
+                setListVisibility(transactions.isNotEmpty())
             }
         }
-        setStats()
+    }
 
-        binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.to_new_transaction)
+    private fun setListVisibility(isTransactions: Boolean){
+        if(isTransactions){
+            binding.noTransactions.visibility = View.GONE
+            binding.recyclerview.visibility = View.VISIBLE
+            changeAmounts()
+        }else {
+            binding.noTransactions.visibility = View.VISIBLE
+            binding.recyclerview.visibility = View.GONE
         }
+    }
 
+    private fun changeAmounts(){
         val liveDataMerger = MediatorLiveData<Int>()
         liveDataMerger.addSource(viewModel.totalSpent) { value ->
-            binding.spentAmount.text = "(${value.roundString(2)})"
-            val balance = getBalanceAmount(value)
-
+            var total = 0.00f
+            if(value != null) total = value
+            binding.spentAmount.text = getString(R.string.value_in_brackets, total.round(2))
+            val balance = getBalanceAmount(total)
             if (balance > 0) {
-                binding.balanceAmount.text = balance.toString()
-                binding.savingAmount.text =
-                    SharedPref.getInstance(requireContext()).getFloat(SAVING_AMOUNT).roundString(2)
+                binding.messageLayout.visibility = View.GONE
+                binding.balanceAmount.text = getString(R.string.currency_value, balance.round(2))
+                binding.balancePercent.text = viewModel.calculateBalancePercent(balance, incomeAmount, savingAmount)
+                binding.savingAmount.text = getString(R.string.currency_value, savingAmount.round(2))
                 binding.savingAmount.setTextColor(resources.getColor(R.color.primary_light_green))
             } else {
-                binding.balanceAmount.text = "0.0"
-                binding.savingAmount.text = (SharedPref.getInstance(requireContext())
-                    .getFloat(SAVING_AMOUNT) + balance).roundString(2)
+                binding.balancePercent.text = getString(R.string.zero_percentage)
+                binding.balanceAmount.text = getString(R.string.currency_value, "0.00")
+                binding.messageLayout.visibility = View.VISIBLE
+                binding.budgetMessage.text = getString(R.string.budget_exceeded_message, viewModel.calculateBudgetExceededPercent(total, incomeAmount, savingAmount).round(1))
+                binding.savingAmount.text = getString(R.string.value, (savingAmount + balance).round(2))
                 binding.savingAmount.setTextColor(resources.getColor(R.color.light_red))
             }
         }
         liveDataMerger.observe(viewLifecycleOwner) {}
     }
 
-    private fun Float.roundString(scale: Int): String {
-        return this.toBigDecimal().setScale(scale, RoundingMode.HALF_EVEN).toString()
+    private fun Float.round(scale: Int): String {
+        return "%.${scale}f".format(this)
     }
 
     private fun setStats() {
-        binding.incomeAmount.text =
-            SharedPref.getInstance(requireContext()).getFloat(INCOME_AMOUNT).toString()
-        binding.savingAmount.text =
-            SharedPref.getInstance(requireContext()).getFloat(SAVING_AMOUNT).toString()
+        binding.incomeAmount.text = getString(R.string.currency_value, incomeAmount.round(2))
+        binding.savingAmount.text =getString(R.string.currency_value, savingAmount.round(2))
+        binding.recyclerview.adapter = adapter
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun isFirstEnter() {
+    private fun checkIsFirstEnter() {
         if (viewModel.isFirstEnter(requireContext()))
             findNavController().navigate(R.id.to_first_enter)
     }

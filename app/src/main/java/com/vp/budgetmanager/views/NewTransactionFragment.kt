@@ -15,10 +15,11 @@ import com.vp.budgetmanager.databinding.FragmentNewTransactionBinding
 import com.vp.budgetmanager.model.Transaction
 import com.vp.budgetmanager.viewmodel.TransactionViewModel
 
-class NewTransactionFragment : Fragment(){
+class NewTransactionFragment : Fragment() {
 
     private lateinit var viewModel: TransactionViewModel
-    var type: String = ""
+    private var type: String = ""
+    private var period: String = ""
 
     private lateinit var binding: FragmentNewTransactionBinding
     override fun onCreateView(
@@ -37,36 +38,49 @@ class NewTransactionFragment : Fragment(){
         setListeners()
     }
 
-    private fun setListeners() {
-        binding.addButton.setOnClickListener {
-            if (TextUtils.isEmpty(binding.amountInput.text) || binding.amountInput.text.toString().toFloat() > Float.MAX_VALUE) {
-                Snackbar.make(it, "Niepoprawny format danych", Snackbar.LENGTH_LONG).show()
-            } else {
-                val date = System.currentTimeMillis()
-                val transaction =
-                    Transaction(amount = binding.amountInput.text.toString().toFloat(), type = type, name = binding.nameInput.text.toString(), time = date)
-                viewModel.insert(transaction)
-                Snackbar.make(it, "Transaction added successfully", Snackbar.LENGTH_LONG).show()
-                findNavController().popBackStack()
-            }
-        }
-    }
-
-
     private fun initialize() {
         ArrayAdapter
             .createFromResource(
                 requireContext(),
-                R.array.spinner_options,
+                R.array.categories,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
             )
             .also { adapter ->
                 adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
                 binding.categoryMenu.adapter = adapter
             }
-        binding.categoryMenu.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        binding.categoryMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 type = parent?.getItemAtPosition(position) as String
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.period_options,
+            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
+            binding.periodMenu.adapter = adapter
+        }
+
+        binding.periodMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                period = parent?.getItemAtPosition(position) as String
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -75,6 +89,36 @@ class NewTransactionFragment : Fragment(){
         }
     }
 
+    private fun setListeners() {
+        binding.addButton.setOnClickListener {
+            when {
+                TextUtils.isEmpty(binding.amountInput.text) -> {
+                    binding.amountInput.error = "Wymagane pole"
+                }
+                binding.amountInput.text.toString().toFloat() > Float.MAX_VALUE -> {
+                    binding.amountInput.error = "Niepoprawny format danych"
+                    Snackbar.make(it, "Niepoprawny format danych", Snackbar.LENGTH_LONG).show()
+                }
+                else -> {
+                    addTransactionAndClose()
+                }
+            }
+        }
+    }
 
+    private fun addTransactionAndClose() {
+        val date = System.currentTimeMillis()
+        val transaction =
+            Transaction(
+                amount = binding.amountInput.text.toString().toFloat(),
+                type = type,
+                name = binding.nameInput.text.toString(),
+                period = period,
+                time = date
+            )
+        viewModel.insert(transaction)
+        Snackbar.make(binding.root, "Koszt został dodany", Snackbar.LENGTH_LONG).show()
+        findNavController().popBackStack()
+    }
 
 }

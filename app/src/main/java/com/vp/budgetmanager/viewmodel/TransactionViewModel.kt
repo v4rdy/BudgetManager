@@ -1,14 +1,20 @@
 package com.vp.budgetmanager.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
-import com.vp.budgetmanager.model.Transaction
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.vp.budgetmanager.database.TransactionRepository
+import com.vp.budgetmanager.model.Transaction
 import com.vp.budgetmanager.utils.INCOME_AMOUNT
 import com.vp.budgetmanager.utils.NAME
 import com.vp.budgetmanager.utils.SAVING_AMOUNT
 import com.vp.budgetmanager.utils.SharedPref
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.math.RoundingMode
 
 
 class TransactionViewModel(private val repository: TransactionRepository) : ViewModel() {
@@ -16,8 +22,8 @@ class TransactionViewModel(private val repository: TransactionRepository) : View
     val allTransactions: LiveData<List<Transaction>> = repository.allTransactions.asLiveData()
     val totalSpent: LiveData<Float> = repository.totalSpent.asLiveData()
 
-    fun getTodaySpent(time: Long): LiveData<Float> {
-        return repository.getTodaySpent(time).asLiveData()
+    private suspend fun getCategorySpent(category: String): Float {
+        return repository.getCategorySpent(category)
     }
 
     fun insert(transaction: Transaction) = viewModelScope.launch {
@@ -28,6 +34,22 @@ class TransactionViewModel(private val repository: TransactionRepository) : View
         repository.delete(transaction)
     }
 
+    fun getDataListForChart(categoryList: List<String>): MutableList<DataEntry> {
+        val dataList = mutableListOf<DataEntry>()
+        runBlocking {
+            categoryList.map { categoryName ->
+                val spentAmount = runBlocking(Dispatchers.IO){
+                    getCategorySpent(categoryName)
+                }
+                if(spentAmount != 0.0f) {
+                    Log.d("Category", "$categoryName - $spentAmount")
+                    dataList.add(ValueDataEntry(categoryName, spentAmount))
+                }
+            }
+        }
+        return dataList
+    }
+
     fun isFirstEnter(context: Context): Boolean {
         return when {
             SharedPref.getInstance(context).getString(NAME).isNullOrEmpty() -> true
@@ -35,6 +57,23 @@ class TransactionViewModel(private val repository: TransactionRepository) : View
             SharedPref.getInstance(context).getFloat(SAVING_AMOUNT) == 0.0F -> true
             else -> false
         }
+    }
+
+    fun calculateBalancePercent(balance: Float, incomeAmount: Float, savingAmount: Float): String {
+        return "(${
+            (balance * 100 / (incomeAmount - savingAmount)).toBigDecimal()
+                .setScale(1, RoundingMode.HALF_EVEN)
+        }%)"
+    }
+
+    fun calculateBudgetExceededPercent(
+        spentAmount: Float,
+        incomeAmount: Float,
+        savingAmount: Float
+    ): Float {
+        val maxBudget = incomeAmount - savingAmount
+        val exceededValue = spentAmount - maxBudget
+        return exceededValue * 100 / maxBudget
     }
 }
 
