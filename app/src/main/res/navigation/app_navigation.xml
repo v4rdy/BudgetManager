@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/transactions_list">
+
+    <fragment
+        android:id="@+id/transactions_list"
+        android:name="com.vp.budgetmanager.views.TransactionsListFragment"
+        android:label="Transactions list"
+        tools:layout="@layout/fragment_transactions_list">
+        <action
+            android:id="@+id/to_new_transaction"
+            app:destination="@+id/new_transaction" />
+        <action
+            android:id="@+id/to_first_enter"
+            app:destination="@+id/first_enter" />
+        <action
+            android:id="@+id/to_statistic"
+            app:destination="@+id/statistic_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/first_enter"
+        android:name="com.vp.budgetmanager.views.FirstEnterFragment"
+        android:label="First enter"
+        tools:layout="@layout/fragment_first_enter"/>
+
+    <fragment
+        android:id="@+id/new_transaction"
+        android:name="com.vp.budgetmanager.views.NewTransactionFragment"
+        android:label="New transactions"
+        tools:layout="@layout/fragment_new_transaction" />
+
+    <fragment
+        android:id="@+id/statistic_fragment"
+        android:name="com.vp.budgetmanager.views.StatisticFragment"
+        android:label="Statistic"
+        tools:layout="@layout/fragment_statistic" />
+
+</navigation>

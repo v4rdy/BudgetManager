@@ -5,12 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.vp.budgetmanager.database_name
 import com.vp.budgetmanager.model.Transaction
+import com.vp.budgetmanager.utils.database_name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Transaction::class], version = 1, exportSchema = false)
+@Database(entities = [Transaction::class], version = 1, exportSchema = true)
 abstract class TransactionRoomDatabase : RoomDatabase() {
 
     abstract fun transactionDAO() : TransactionDAO
@@ -29,7 +29,6 @@ abstract class TransactionRoomDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(transactionDAO: TransactionDAO) {
-            // Delete all content here.
             transactionDAO.deleteAll()
         }
     }

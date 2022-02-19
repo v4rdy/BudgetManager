@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_light"
+    android:orientation="vertical"
+    tools:context=".views.StatisticFragment">
+
+    <LinearLayout
+        android:id="@+id/no_statistic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:text="@string/no_statistic_message"
+            android:textAlignment="center"
+            android:textColor="@color/primary_dark_green"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/background_ripple"
+            android:text="@string/back"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+
+    <com.anychart.AnyChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

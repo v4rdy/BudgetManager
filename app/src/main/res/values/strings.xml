@@ -1,11 +1,50 @@
 <resources>
-    <string name="app_name">Expense</string>
-    <string-array name="spinner_options">
-        <item>Food</item>
-        <item>Shopping</item>
-        <item>Utility Bill</item>
-        <item>Rent</item>
-        <item>Entertainment</item>
-        <item>Other</item>
+    <string name="app_name">Budget Manager</string>
+
+    <string-array name="categories">
+        <item>Opłaty</item>
+        <item>Zakupy</item>
+        <item>Przyjemności</item>
+        <item>Hobby</item>
+        <item>Dom</item>
+        <item>Transport</item>
+        <item>Higiena</item>
+        <item>Inne</item>
     </string-array>
+
+    <string-array name="period_options">
+        <item>Miesięczny</item>
+        <item>Kwartalny</item>
+        <item>Roczny</item>
+    </string-array>
+
+    <string name="currency_value">%s zł</string>
+    <string name="budget_exceeded_message">Twój budget został przekroczony o %s&#65130;</string>
+    <string name="value_in_brackets">(%s zł)</string>
+    <string name="value">%s</string>
+    <string name="add_transaction">Dodaj koszt</string>
+    <string name="add">Dodaj</string>
+    <string name="delete_transaction">delete_transaction</string>
+    <string name="hello">Cześć!</string>
+    <string name="enter_profile_data">Wprowadż poniższe dane, dla dalszej analizy twojego budżetu:</string>
+    <string name="name">Imię</string>
+    <string name="income_sum">Dochód misięczny</string>
+    <string name="saving_sum">Kwota oczszędności</string>
+    <string name="enter">Wejdź</string>
+    <string name="no_transactions">Brak dodanych transakcji</string>
+    <string name="transaction_name">Nazwa</string>
+    <string name="amount">Kwota</string>
+    <string name="new_transaction">Nowy koszt</string>
+    <string name="savings">Oszczędność:</string>
+    <string name="balance">Saldo:</string>
+    <string name="zero_amount">0.00zł</string>
+    <string name="zero_percentage">(0.00%)</string>
+    <string name="zero_amount_brackets">(0.00zł)</string>
+    <string name="empty_field">Pole jest puste</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_statistic_message">Brak statystyki \n Dodaj nowe koszty żeby zobsczyć statystykę</string>
+    <string name="back">Wróć</string>
+    <string name="saving_amount_plan">*planowana kwota miesięczna oszczędności</string>
+    <string name="choose_period">Wybierz okres:</string>
+    <string name="choose_category">Wybierz kategorie:</string>
 </resources>
